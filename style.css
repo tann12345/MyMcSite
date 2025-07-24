@@ -1,0 +1,71 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  background: url('https://wallpaperaccess.com/full/317501.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.7);
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.buttons {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: #3c763d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2a4b2a;
+}
+
+#status {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#botScreen {
+  background: #222;
+  height: 300px;
+  overflow-y: scroll;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.system-message {
+  color: #ccc;
+  font-style: italic;
+}
