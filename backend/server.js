@@ -1,25 +1,27 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const http = require("http");
+const socketIO = require("socket.io");
+const mineflayer = require("mineflayer");
+const { mineflayer: mineflayerViewer } = require("prismarine-viewer");
+
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
-// ✅ Allow frontend access
-app.use(cors({
-  origin: 'https://zubidu.onrender.com',  // ✅ your frontend site
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-
-app.use(express.json());
-
-// Your register route (example)
-app.post('/api/register', (req, res) => {
-  const { email, password } = req.body;
-  // Save to DB or file...
-  res.json({ message: 'User registered successfully' });
+const bot = mineflayer.createBot({
+  host: "localhost", // change this to your server IP
+  port: 25565,
+  username: "BotLive"
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+bot.once("spawn", () => {
+  console.log("Bot spawned");
+  mineflayerViewer(bot, { port: 3007, firstPerson: true }); // bot screen viewer
+});
+
+// Serve static frontend
+app.use(express.static("frontend"));
+
+server.listen(3001, () => {
+  console.log("Backend server running on port 3001");
 });
