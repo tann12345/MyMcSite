@@ -6,9 +6,3 @@ services:
     startCommand: python app.py
     branch: main
     autoDeploy: true
-
-  - type: static
-    name: my-frontend
-    staticPublishPath: .
-    branch: main
-    autoDeploy: true
