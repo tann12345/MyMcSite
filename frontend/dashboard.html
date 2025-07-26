@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bot Dashboard</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>Control Your Minecraft Bot</h2>
-  <form onsubmit="startBot(event)">
-    <input type="text" id="host" placeholder="Minecraft Server IP" required>
-    <input type="text" id="botUsername" placeholder="Bot Username" required>
-    <button type="submit">Start Bot</button>
-  </form>
-  <div id="status"></div>
-  <script src="script.js"></script>
+  <div class="dashboard">
+    <h1>Control Your Minecraft Bot</h1>
+    <input id="host" placeholder="Server Host" />
+    <input id="port" placeholder="Port (default 25565)" />
+    <input id="username" placeholder="Bot Username" />
+    <button onclick="startBot()">Start Bot</button>
+  </div>
+<script>
+  async function startBot() {
+    const host = document.getElementById('host').value;
+    const port = document.getElementById('port').value;
+    const username = document.getElementById('username').value;
+    await fetch('https://minecraft-site-backend.onrender.com/api/startbot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ host, port, username })
+    });
+    alert('Bot Started!');
+  }
+</script>
 </body>
 </html>
