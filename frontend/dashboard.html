@@ -1,64 +1,25 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const path = require('path');
-const { startBot } = require('./bot');
+<!-- frontend/dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-box">
+    <h2>Welcome to your Bot Dashboard</h2>
 
-const app = express();
+    <form id="botForm">
+      <input type="text" id="botName" placeholder="Bot Name" required>
+      <input type="text" id="serverIP" placeholder="Server IP" required>
+      <input type="number" id="serverPort" placeholder="Port" required>
+      <button type="submit">Start Bot</button>
+    </form>
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+    <h3>Bot Screen:</h3>
+    <iframe id="botScreen" src="http://localhost:3007" width="600" height="400" frameborder="0"></iframe>
+  </div>
 
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/mcbot', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-// Models
-const User = require('./models/auth');
-
-// Register endpoint
-app.post('/api/register', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: 'User already exists' });
-    const user = new User({ email, password });
-    await user.save();
-    res.status(201).json({ message: 'Registered successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error occurred', error: err });
-  }
-});
-
-// Login endpoint
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email, password });
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-    res.status(200).json({ message: 'Login success' });
-  } catch (err) {
-    res.status(500).json({ message: 'Login error', error: err });
-  }
-});
-
-// Start bot endpoint
-app.post('/api/startbot', async (req, res) => {
-  const { serverIp, botName, mode } = req.body;
-  try {
-    startBot(serverIp, botName, mode);
-    res.status(200).json({ message: 'Bot started' });
-  } catch (err) {
-    res.status(500).json({ message: 'Bot start error', error: err });
-  }
-});
-
-// Start server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 Backend running on port ${PORT}`);
-});
+  <script src="dashboard.js"></script>
+</body>
+</html>
