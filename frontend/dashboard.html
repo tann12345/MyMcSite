@@ -1,29 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="dashboard">
-    <h1>Control Your Minecraft Bot</h1>
-    <input id="host" placeholder="Server Host" />
-    <input id="port" placeholder="Port (default 25565)" />
-    <input id="username" placeholder="Bot Username" />
-    <button onclick="startBot()">Start Bot</button>
-  </div>
-<script>
-  async function startBot() {
-    const host = document.getElementById('host').value;
-    const port = document.getElementById('port').value;
-    const username = document.getElementById('username').value;
-    await fetch('https://minecraft-site-backend.onrender.com/api/startbot', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ host, port, username })
-    });
-    alert('Bot Started!');
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const path = require('path');
+const { startBot } = require('./bot');
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/mcbot', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// Models
+const User = require('./models/auth');
+
+// Register endpoint
+app.post('/api/register', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ message: 'User already exists' });
+    const user = new User({ email, password });
+    await user.save();
+    res.status(201).json({ message: 'Registered successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error occurred', error: err });
   }
-</script>
-</body>
-</html>
+});
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email, password });
+    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    res.status(200).json({ message: 'Login success' });
+  } catch (err) {
+    res.status(500).json({ message: 'Login error', error: err });
+  }
+});
+
+// Start bot endpoint
+app.post('/api/startbot', async (req, res) => {
+  const { serverIp, botName, mode } = req.body;
+  try {
+    startBot(serverIp, botName, mode);
+    res.status(200).json({ message: 'Bot started' });
+  } catch (err) {
+    res.status(500).json({ message: 'Bot start error', error: err });
+  }
+});
+
+// Start server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 Backend running on port ${PORT}`);
+});
