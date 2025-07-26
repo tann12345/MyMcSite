@@ -18,7 +18,7 @@ function startBot(event) {
   })
   .then(response => response.json())
   .then(data => {
-    alert('Bot started!');
+    alert('Bot started successfully!');
     console.log(data);
   })
   .catch(error => {
