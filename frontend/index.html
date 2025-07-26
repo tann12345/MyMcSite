@@ -1,14 +1,33 @@
+<!-- frontend/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Zubidu Site</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Bot Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="main-page">
-    <h1>Welcome to Zubidu Minecraft Bot Control</h1>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
+  <div class="container">
+    <h1>🚀 Minecraft Bot Control Panel</h1>
+    <div class="form-box">
+      <input type="text" id="botName" placeholder="Bot Name">
+      <input type="text" id="serverIP" placeholder="Server IP">
+      <input type="text" id="serverPort" placeholder="Server Port">
+      <select id="botMode">
+        <option value="mine">Mine</option>
+        <option value="pvp">PvP</option>
+        <option value="follow">Follow</option>
+        <option value="xray">X-Ray</option>
+      </select>
+      <button onclick="startBot()">Start Bot</button>
+    </div>
+
+    <div class="iframe-box">
+      <h2>🖥️ Bot Screen</h2>
+      <iframe id="botScreen" src="http://localhost:3007" frameborder="0"></iframe>
+    </div>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
