@@ -1,25 +1,22 @@
-<!-- frontend/dashboard.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Bot Control</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="dashboard-box">
-    <h2>Welcome to your Bot Dashboard</h2>
-
+  <div class="container">
+    <h1>Minecraft Bot Control Panel</h1>
     <form id="botForm">
-      <input type="text" id="botName" placeholder="Bot Name" required>
-      <input type="text" id="serverIP" placeholder="Server IP" required>
-      <input type="number" id="serverPort" placeholder="Port" required>
-      <button type="submit">Start Bot</button>
+      <input type="text" id="botName" placeholder="Enter Bot Name" required />
+      <input type="text" id="serverIP" placeholder="Enter Server IP" required />
+      <input type="text" id="serverPort" placeholder="Enter Server Port" required />
+      <button type="submit">Launch Bot</button>
     </form>
-
-    <h3>Bot Screen:</h3>
-    <iframe id="botScreen" src="http://localhost:3007" width="600" height="400" frameborder="0"></iframe>
   </div>
 
-  <script src="dashboard.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
