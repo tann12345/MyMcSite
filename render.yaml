@@ -1,14 +1,16 @@
+infrastructureVersion: v1
+
 services:
   - type: web
     name: my-backend
     env: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: python backend/app.py
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
     branch: main
     autoDeploy: true
 
-  - type: static
+  - type: static_site
     name: my-frontend
-    staticPublishPath: frontend
+    staticPublishPath: .
     branch: main
     autoDeploy: true
