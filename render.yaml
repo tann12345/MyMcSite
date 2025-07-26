@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: my-backend
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python backend/app.py
+    branch: main
+    autoDeploy: true
+
+  - type: static
+    name: my-frontend
+    staticPublishPath: frontend
+    branch: main
+    autoDeploy: true
