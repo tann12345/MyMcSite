@@ -1,65 +1,34 @@
 const mineflayer = require('mineflayer');
-const { pathfinder } = require('mineflayer-pathfinder');
-const pvp = require('mineflayer-pvp').plugin;
-const WebSocket = require('ws');
+const express = require('express');
+const cors = require('cors');
 
-const bot = mineflayer.createBot({
-  host: 'localhost', // change to your Minecraft server IP
-  port: 25565,
-  username: 'Bot123',
-});
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-bot.loadPlugin(pvp);
-bot.loadPlugin(pathfinder);
+let bot;
 
-const wss = new WebSocket.Server({ port: 8081 });
+app.post("/start-bot", (req, res) => {
+  const { serverIP, command } = req.body;
 
-function broadcast(message) {
-  const data = JSON.stringify({ message });
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
+  if (bot) bot.quit();
+
+  bot = mineflayer.createBot({
+    host: serverIP,
+    username: 'ZubiduBot'
   });
-}
 
-bot.once('spawn', () => {
-  broadcast('Bot has spawned in the world.');
-  bot.chat('Bot is online! Use chat commands or website to control me.');
+  bot.once('spawn', () => {
+    if (command === "mine") bot.chat("Starting to mine...");
+    if (command === "pvp") bot.chat("Let’s fight!");
+    if (command === "follow") bot.chat("Following...");
+    res.send({ status: "Bot spawned and command sent!" });
+  });
+
+  bot.on('error', err => {
+    console.log("Bot error:", err.message);
+    res.status(500).send({ error: err.message });
+  });
 });
 
-bot.on('chat', (username, message) => {
-  broadcast(`[CHAT] <${username}>: ${message}`);
-
-  if (username === bot.username) return;
-
-  const msg = message.toLowerCase();
-
-  if (msg.startsWith('bot123 kill')) {
-    const targetName = message.split('kill')[1].trim();
-    const target = bot.players[targetName]?.entity;
-
-    if (!target) {
-      const text = `Can't find player ${targetName}.`;
-      bot.chat(text);
-      broadcast(text);
-    } else {
-      const text = `Engaging PvP with ${targetName}!`;
-      bot.chat(text);
-      broadcast(text);
-      bot.pvp.attack(target);
-    }
-  }
-
-  if (msg === 'bot123 stop') {
-    bot.pvp.stop();
-    const text = 'Stopped PvP.';
-    bot.chat(text);
-    broadcast(text);
-  }
-});
-
-// WebSocket heartbeat to avoid disconnect
-wss.on('connection', ws => {
-  ws.send(JSON.stringify({ message: 'Connected to bot WebSocket.' }));
-});
+app.listen(3000, () => console.log("✅ Backend running on port 3000"));
