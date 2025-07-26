@@ -2,62 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Minecraft Bot Controller</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minecraft Bot Launcher</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Minecraft PvP Bot Controller</h1>
-    <input type="text" id="playerName" placeholder="Enter Player Name" />
-    <div class="buttons">
-      <button onclick="sendCommand('attack')">Attack</button>
-      <button onclick="sendCommand('stop')">Stop</button>
-    </div>
-    <p id="status"></p>
-    <h2>Bot Live Screen</h2>
-    <div id="botScreen"></div>
+  <div class="terminal">
+    <h1>🟢 Minecraft Bot Control Panel</h1>
+    <form id="botForm">
+      <label>Server IP:</label><br />
+      <input type="text" id="serverIP" placeholder="play.example.com" required /><br /><br />
+      
+      <label>Command:</label><br />
+      <select id="command">
+        <option value="pvp">Start PvP</option>
+        <option value="mine">Start Mining</option>
+        <option value="follow">Follow Player</option>
+      </select><br /><br />
+      
+      <button type="submit">🚀 Launch Bot</button>
+    </form>
+
+    <div id="output" class="output"></div>
   </div>
 
-  <script>
-    async function sendCommand(action) {
-      const player = document.getElementById('playerName').value.trim();
-      if (!player && action === 'attack') {
-        alert('Please enter a player name!');
-        return;
-      }
-      const command = action === 'attack' ? `Bot123 kill ${player}` : 'Bot123 stop';
-
-      const response = await fetch('/command', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command }),
-      });
-
-      const status = document.getElementById('status');
-      if (response.ok) {
-        status.textContent = `Command sent: "${command}"`;
-      } else {
-        status.textContent = 'Failed to send command.';
-      }
-    }
-
-    // Connect to the WebSocket server to receive live bot messages
-    const botScreen = document.getElementById('botScreen');
-    const ws = new WebSocket('ws://localhost:8081');
-
-    ws.onopen = () => {
-      botScreen.innerHTML += '<div class="system-message">Connected to bot.</div>';
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      botScreen.innerHTML += `<div>${data.message}</div>`;
-      botScreen.scrollTop = botScreen.scrollHeight; // auto scroll
-    };
-
-    ws.onclose = () => {
-      botScreen.innerHTML += '<div class="system-message">Disconnected from bot.</div>';
-    };
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
