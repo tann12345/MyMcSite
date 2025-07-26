@@ -1,21 +1,11 @@
 const mineflayer = require('mineflayer');
-
 let bot;
-
-function startBot({ host, username }) {
-  bot = mineflayer.createBot({
-    host: host,
-    port: 25565,
-    username: username
-  });
-
-  bot.on('spawn', () => {
-    console.log('Bot spawned!');
-  });
-
+function startBot({ host, port, username }) {
+  if (bot) bot.end();
+  bot = mineflayer.createBot({ host, port, username });
   bot.on('chat', (username, message) => {
     console.log(`${username}: ${message}`);
   });
+  bot.once('spawn', () => console.log('🤖 Bot has spawned!'));
 }
-
 module.exports = { startBot };
