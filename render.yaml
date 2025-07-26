@@ -1,8 +1,20 @@
 services:
   - type: web
-    name: my-backend
+    name: minecraft-site-backend
     env: node
+    plan: free
     buildCommand: npm install
     startCommand: node backend/server.js
+    envVars:
+      - key: MONGO_URI
+        value: YOUR_MONGODB_URI_HERE
+    repo: https://github.com/tann12345/MyMcSite
     branch: main
-    autoDeploy: true
+
+  - type: static
+    name: minecraft-site-frontend
+    env: static
+    buildCommand: ''
+    staticPublishPath: frontend
+    repo: https://github.com/tann12345/MyMcSite
+    branch: main
