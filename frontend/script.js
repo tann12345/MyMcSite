@@ -1,5 +1,5 @@
 function startBot(event) {
-  event.preventDefault();
+  event.preventDefault(); // ✅ Make sure the event is passed
 
   const botName = document.getElementById('botName').value;
   const serverIp = document.getElementById('serverIp').value;
@@ -18,11 +18,11 @@ function startBot(event) {
   })
   .then(response => response.json())
   .then(data => {
-    alert('Bot started successfully!');
-    console.log(data);
+    console.log('✅ Bot started:', data);
+    alert("Bot started successfully!");
   })
   .catch(error => {
-    console.error('Error starting bot:', error);
-    alert('Failed to start bot.');
+    console.error('❌ Error starting bot:', error);
+    alert("Failed to start bot.");
   });
 }
