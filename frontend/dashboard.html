@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bot Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Control Your Minecraft Bot</h2>
+  <form onsubmit="startBot(event)">
+    <input type="text" id="host" placeholder="Minecraft Server IP" required>
+    <input type="text" id="botUsername" placeholder="Bot Username" required>
+    <button type="submit">Start Bot</button>
+  </form>
+  <div id="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
