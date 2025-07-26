@@ -1,33 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Register</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Register - Minecraft Bot Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .register-box {
+      background: #1a1a1a;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .register-box h2 {
+      margin-bottom: 20px;
+      color: #00ffff;
+    }
+
+    .register-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: #333;
+      color: white;
+      font-size: 16px;
+    }
+
+    .register-box button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #00ffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .register-box button:hover {
+      background-color: #00cccc;
+    }
+
+    .register-box p {
+      margin-top: 15px;
+    }
+
+    .register-box a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+
+    .register-box a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <div class="register-container">
-    <h2>Create Account</h2>
-    <input id="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Password" />
+  <div class="register-box">
+    <h2>Register</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
     <button onclick="register()">Register</button>
+    <p>Already have an account? <a href="login.html">Login</a></p>
   </div>
-<script>
-  async function register() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const res = await fetch('https://minecraft-site-backend.onrender.com/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (data.message) {
-      alert('Registered successfully. Now log in.');
-      window.location.href = 'login.html';
-    } else {
-      alert('Error: ' + data.error);
-    }
-  }
-</script>
+
+  <script src="register.js"></script>
 </body>
 </html>
